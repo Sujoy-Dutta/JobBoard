@@ -18,5 +18,5 @@ await apolloServer.start();
 app.use('/graphql', apolloMiddleware(apolloServer));
 
 app.listen({ port: PORT }, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}/graphql`);
 });
