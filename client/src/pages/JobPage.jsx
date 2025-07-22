@@ -1,12 +1,22 @@
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { formatDate } from '../lib/formatters';
-import { jobs } from '../lib/fake-data';
+// import { jobs } from '../lib/fake-data';
+import { fetchJobById } from '../lib/graphql/queries';
 
 function JobPage() {
   const { jobId } = useParams();
+  const [job, setJob] = useState(null);
 
-  const job = jobs.find((job) => job.id === jobId);
+  useEffect(() =>{
+    fetchJobById(jobId).then(setJob)
+  },[jobId]);
+
+  if (!job) {
+    return <div>Loading...</div>;
+  }
+  
   return (
     <div>
       <h1 className="title is-2">
