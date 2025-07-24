@@ -44,6 +44,12 @@ export async function fetchCompanyById(id) {
                 id
                 name
                 description
+                jobs {
+                    id
+                    title
+                    description
+                    date
+                }
             }
         }`;
     const variables = { id };
