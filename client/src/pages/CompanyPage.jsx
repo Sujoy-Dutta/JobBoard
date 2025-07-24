@@ -7,26 +7,51 @@ import JobList from '../components/JobList';
 function CompanyPage() {
   const { companyId } = useParams();
 
-  const [company, setComapny] = useState(null);
+  const [state, setState] = useState({
+    company: null,
+    loading: true,
+    error: false,
+  })
 
   useEffect(() => {
-    fetchCompanyById(companyId).then(setComapny);
+    (async () => {
+      try {
+        const companyData = await fetchCompanyById(companyId);
+        setState({
+          company: companyData,
+          loading: false,
+          error: false,
+        });
+      } catch {
+        setState({
+          company: null,
+          loading: false,
+          error: true,
+        });
+      }
+    })();
   }, [companyId]);
 
-  if (!company) {
+  if (state.loading) {
     return <div>Loading...</div>;
+  }
+  if (state.error) {
+    return <div>Error loading company data.</div>;
+  }
+  if (!state.company) {
+    return <div>No company found.</div>;
   }
 
   return (
     <div>
       <h1 className="title">
-        {company.name}
+        {state.company.name}
       </h1>
       <div className="box">
-        {company.description}
+        {state.company.description}
       </div>
-      <h2 className="subtitle">Jobs at {company.name}</h2>
-      <JobList jobs={company.jobs} />
+      <h2 className="subtitle">Jobs at {state.company.name}</h2>
+      <JobList jobs={state.company.jobs} />
     </div>
   );
 }
