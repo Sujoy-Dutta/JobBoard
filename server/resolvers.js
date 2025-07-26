@@ -29,7 +29,7 @@ export const resolvers = {
     },
 
     Mutation: {
-      createJob: async(_, { input: { companyId, title, description }}, { user }) => {
+      createJob: async(_, { input: { title, description }}, { user }) => {
         // if(!auth) {
         //   throw new GraphQLError('Unauthorized', {
         //     extensions: {
