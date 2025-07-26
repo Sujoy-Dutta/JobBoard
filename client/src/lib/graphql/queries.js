@@ -37,6 +37,35 @@ export async function fetchJobById(id) {
     return data.job;
 }
 
+export async function deleteJob(id) {
+    const mutation = gql`
+        mutation DeleteJob($id: ID!) {
+            deleteJob(id: $id) {
+                id
+            }
+        }`;
+    const data = await client.request(mutation, { id });
+    return data.deleteJob;
+    
+}
+
+export async function createJob(input) {
+    const mutation = gql`
+        mutation CreateJob ($input: CreateJobInput!) {
+            createJob(input: $input) {
+                id
+            }
+        }`;;
+    const data = await client.request(mutation, {
+        input: {
+            companyId: input.companyId,
+            title: input.title,
+            description: input.description || '',
+        }
+    });
+    return data.createJob;
+}
+
 export async function fetchCompanyById(id) {
     const query = gql`
         query($id: ID!) {
