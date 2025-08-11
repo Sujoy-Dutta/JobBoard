@@ -30,20 +30,42 @@ export const resolvers = {
 
     Mutation: {
       createJob: async(_, { input: { title, description }}, { user }) => {
-        // if(!auth) {
-        //   throw new GraphQLError('Unauthorized', {
-        //     extensions: {
-        //       code: 'UNAUTHORIZED',
-        //     },
-        //   });
-        // }
+        if(!user) {
+          throw new GraphQLError('Missing Authentication', {
+            extensions: {
+              code: 'UNAUTHORIZED',
+            },
+          });
+        }
         return await createJob({ companyId: user.companyId, title, description });
       },
-      deleteJob: async(_, { id}) => {
-        return await deleteJob(id);
+      deleteJob: async(_, { id}, { user }) => {
+        if(!user) {
+          throw new GraphQLError('Missing Authentication', {
+            extensions: {
+              code: 'UNAUTHORIZED',
+            },
+          });
+        }
+        const job =  await deleteJob(id, user.companyId);
+        if(!job) {
+          return NotFoundError(`Job not found: ${id}`);
+        }
+        return job;
       },
-      updateJob: async(_, { id, input: { title, description }}) => {
-        return await updateJob({ id, title, description });
+      updateJob: async(_, { id, companyId, input: { title, description }}, { user }) => {
+        if(!user) {
+          throw new GraphQLError('Missing Authentication', {
+            extensions: {
+              code: 'UNAUTHORIZED',
+            },
+          });
+        }
+        const job = await updateJob({ id, companyId: user.companyId, title, description });
+        if(!job) {
+          return NotFoundError(`Job not found: ${id}`);
+        }
+        return job;
       },
     },
 }
