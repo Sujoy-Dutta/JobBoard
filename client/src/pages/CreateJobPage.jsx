@@ -9,7 +9,7 @@ function CreateJobPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let input = { title, description, companyId: 'FjcJCHJALA4i' }; // Assuming a default companyId for now
+    let input = { title, description}; 
     const newJob = await createJob(input)
     console.log('should post a new job:', newJob);
     navigate(`/jobs/${newJob.id}`); // Redirect to the new job page after creation
