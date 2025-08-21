@@ -34,7 +34,7 @@ const authLink = new ApolloLink((operation, forward) => {
 // }
 // )
 
-const apolloClient = new ApolloClient({
+export const apolloClient = new ApolloClient({
     link: concat(authLink, httpLink),
     cache: new InMemoryCache(),
     // defaultOptions: {
@@ -66,6 +66,20 @@ export async function fetchJobs() {
         });
         return data.jobs;
 };
+export const companyByIdQuery = gql`
+        query companyById($id: ID!) {
+            companyById(id: $id) {
+                id
+                name
+                description
+                jobs {
+                    id
+                    title
+                    description
+                    date
+                }
+            }
+        }`
 export async function fetchJobById(id) {
     const variables = { id };
     const { data } = await apolloClient.query({ 
@@ -137,23 +151,24 @@ export async function createJob(input) {
     return data.job;
 }
 
-export async function fetchCompanyById(id) {
-    const query = gql`
-        query($id: ID!) {
-            companyById(id: $id) {
-                id
-                name
-                description
-                jobs {
-                    id
-                    title
-                    description
-                    date
-                }
-            }
-        }`;
-    const variables = { id };
-    const {data} = await apolloClient.query({ query, variables });
-    return data.companyById;
-}
+// export async function fetchCompanyById(id) {
+//     const query = gql`
+//         query($id: ID!) {
+//             companyById(id: $id) {
+//                 id
+//                 name
+//                 description
+//                 jobs {
+//                     id
+//                     title
+//                     description
+//                     date
+//                 }
+//             }
+//         }`;
+//     const variables = { id };
+//     const {data} = await apolloClient.query({ query, variables });
+//     console.log('fetchCompanyById data:', data);
+//     return data.companyById;
+// }
 
