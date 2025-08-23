@@ -3,7 +3,7 @@ import {getJobs, getJob, getJobsByCompanyId, createJob, deleteJob, updateJob} fr
 import { getCompany } from './db/companies.js';
 export const resolvers = {
   Query: {
-    jobs: async () => getJobs(),
+    jobs: async (_root, {limit, offset}) => getJobs(limit, offset),
     job: async (_, { id }) => {
       const job = getJob(id);
       if(!job) {
@@ -24,8 +24,10 @@ export const resolvers = {
           jobs: async (company) => getJobsByCompanyId(company.id), 
     },
     Job:{
-        company: (job) => getCompany(job.companyId),
-        date: (job) => job.createdAt.slice(0, "YYYY-MM-DD".length),
+      company: (job, _args, { companyLoader }) => {
+        return companyLoader.load(job.companyId);
+      },
+      date: (job) => job.createdAt.slice(0, "YYYY-MM-DD".length),
     },
 
     Mutation: {
