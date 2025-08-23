@@ -47,8 +47,8 @@ export const apolloClient = new ApolloClient({
     // },
 });
 
-export async function fetchJobs() {
-    const query  = gql`
+
+export const JobsQuery = gql`
         query Jobs{
             jobs {
                 id
@@ -59,13 +59,8 @@ export async function fetchJobs() {
                     name
                 }
             }
-        }`
-        const { data } = await apolloClient.query({ 
-            query, 
-            fetchPolicy: 'network-only',
-        });
-        return data.jobs;
-};
+        }`;
+
 export const companyByIdQuery = gql`
         query companyById($id: ID!) {
             companyById(id: $id) {
@@ -115,7 +110,8 @@ export async function deleteJob(id) {
                     name
                 }
     }`;
- const JobByIdQuery = gql`
+
+ export const JobByIdQuery = gql`
         query JobsById($id: ID!) {
             job(id: $id) {
                 ...JobDetails

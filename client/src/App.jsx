@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
 import { getUser } from './lib/auth';
 import { apolloClient } from './lib/graphql/queries';
