@@ -119,6 +119,15 @@ export async function deleteJob(id) {
         }
         ${jobDetailsFragment}
     `;
+
+export const createJobMutation = gql`
+    mutation CreateJob ($input: CreateJobInput!) {
+        job: createJob(input: $input) {
+            ...JobDetails
+        }
+    }
+    ${jobDetailsFragment}
+`;
 export async function createJob(input) {
     const mutation = gql`
         mutation CreateJob ($input: CreateJobInput!) {
