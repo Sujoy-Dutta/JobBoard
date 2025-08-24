@@ -1,4 +1,4 @@
-function PaginationBar({ currentPage, totalPages, onPageChange }) {
+export function PaginationBar({ currentPage, totalPages, onPageChange }) {
   const pages = getVisiblePages(currentPage, totalPages);
   return (
     <nav className="pagination is-centered" role="navigation" aria-label="pagination">

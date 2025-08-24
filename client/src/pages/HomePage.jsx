@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 import JobList from '../components/JobList';
 import { useJobs } from '../lib/graphql/hooks';
+import PaginationBar from '../components/PaginationBar';
 
+const JOB_PER_PAGE = 5;
 function HomePage() {
-  const { jobs, loading, error} = useJobs();
+  const [currentPage, setCurrentPage] = useState(1);
+  const { jobs, loading, error} = useJobs(
+    JOB_PER_PAGE, 
+    (currentPage-1)*JOB_PER_PAGE
+  );
   console.log('HomePage state:', {jobs, loading, error});
 
   if (loading) {
@@ -12,13 +18,15 @@ function HomePage() {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
-
+ const totalPages = Math.ceil(jobs.totalCount / JOB_PER_PAGE);
   return (
     <div>
       <h1 className="title">
         Job Board
       </h1>
-      <JobList jobs={jobs} />
+      <PaginationBar currentPage={currentPage} totalPages={totalPages}
+      onPageChange={setCurrentPage}/>
+      <JobList jobs={jobs.items} />
     </div>
   );
 }
