@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client/react';
 import { companyByIdQuery, JobByIdQuery, JobsQuery, createJobMutation} from './queries';
 
 export function useCompany(id) {
